@@ -19,7 +19,8 @@ class TreeNode:
 
 class MCTS:
 
-    def __init__(self):
+    def __init__(self, level:int):
+        self.level = level
         self.root: Optional[TreeNode] = None
 
     def search(self, initial_state: Board) -> TreeNode:
@@ -59,9 +60,6 @@ class MCTS:
                 if len(states) == len(node.children):
                     node.is_fully_expanded = True
                 return new_node
-            # return node
-        print("not here")
-
 
     def rollout(self, board: Board) -> int:
         while not (board.is_win() or board.is_draw()):
@@ -84,7 +82,6 @@ class MCTS:
 
     def get_best_move_by_policy(self, best_moves: TreeNode, turn: int) -> TreeNode:
         if len(best_moves) == 1:
-            # print("*********best moves only 1**********")
             return best_moves[0]
         elif turn == TIGER or turn == GOAT:
             move_list: List[bool] = [move.board.is_goat_captured if turn == TIGER else (move.board.is_goat_safe and move.board.is_tiger_trapped) or move.board.is_goat_safe for move in best_moves]
@@ -117,5 +114,4 @@ class MCTS:
 
             elif move_score == best_score:
                 best_moves.append(child_node)
-        # return random.choice(best_moves)
-        return self.get_best_move_by_policy(best_moves, -best_moves[0].board.turn)
+        return random.choice(best_moves) if self.level == 1 else self.get_best_move_by_policy(best_moves, -best_moves[0].board.turn)

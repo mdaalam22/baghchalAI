@@ -1,11 +1,11 @@
 from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
-# import uvicorn
 import numpy as np
 
 from board import Board
 from mcts import MCTS
+import play_nn
 
 app = FastAPI()
 
@@ -25,9 +25,6 @@ async def root():
 async def get_move(data: BoardSchema) -> str:
 
     board = Board()
-    mcts  = MCTS()
-    
-
     board.position = np.array(data.position)
     board.goat_left_to_placed = data.goat_left_to_placed
     board.goat_captured = data.goat_captured
@@ -35,10 +32,16 @@ async def get_move(data: BoardSchema) -> str:
     board.ai = data.ai
     board.turn = data.ai
 
+    mcts  = MCTS(board.level)
+
+    if board.level == 3:
+        best_moves = board.generate_possible_moves()
+        best_move = play_nn.best_move_nn(board, best_moves)
+        new_pos_list = best_move.position 
+        move: str = board.get_move(board.position, new_pos_list)
+        return {'success': True, 'move': move}
+
     best_move = mcts.search(board)
-    # best_moves = board.generate_possible_moves() # new
-    # best_move = max(best_moves, key = lambda obj: obj.reward) # new
-    # new_pos_list = best_move.position # new
 
     new_pos_list = best_move.board.position
 
@@ -48,7 +51,4 @@ async def get_move(data: BoardSchema) -> str:
     return {'success': True, 'move': move}
 
 
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="127.0.0.1", port=3000)
    

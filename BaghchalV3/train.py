@@ -69,26 +69,26 @@ def game_loop(board):
     final_dict.update(qtable._qtable)
 
 
-if __name__ == '__main__':
-    N = 1000  # Number of training episodes
-    start = time.time()
-    # for _ in tqdm.trange(N):
-    #     game.play()
-    for i in range(N):
-        print(f"=====Game: {i+1}========")
-        board = Board()
-        game_loop(board)
+# if __name__ == '__main__':
+#     N = 1000  # Number of training episodes
+#     start = time.time()
+#     # for _ in tqdm.trange(N):
+#     #     game.play()
+#     for i in range(N):
+#         print(f"=====Game: {i+1}========")
+#         board = Board()
+#         game_loop(board)
     
-    end = time.time()
-    print("Tiger win: ",tiger_win)
-    print("goat_win: ",goat_win)
-    print("Draw: ",game_draw)
-    # qtable.save('best_qtable2.pkl')
-    print("total state recorded: ",len(final_dict))
-    with open('best_qtable_500.pkl', 'wb') as f:
-        pickle.dump(final_dict, f)
+#     end = time.time()
+#     print("Tiger win: ",tiger_win)
+#     print("goat_win: ",goat_win)
+#     print("Draw: ",game_draw)
+#     # qtable.save('best_qtable2.pkl')
+#     print("total state recorded: ",len(final_dict))
+#     with open('best_qtable_500.pkl', 'wb') as f:
+#         pickle.dump(final_dict, f)
    
-    print(f"Time Taken: {end-start:.2f}s")
+#     print(f"Time Taken: {end-start:.2f}s")
 
     
 

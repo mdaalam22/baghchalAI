@@ -17,7 +17,7 @@ class Board:
         self.is_goat_captured: bool = False 
         self.is_tiger_trapped: bool = False 
         self.is_goat_safe: bool = True 
-        self.reward = 0 # new
+        self.reward = 0 
         self.ai: Optional[int] = None
         self.level: int = 0
         self.prev_moves: Deque = deque(maxlen=MAX_SIZE)
